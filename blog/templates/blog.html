@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{%block content%}
+  <main class="container mt-4">
+    <section>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-danger" role="alert">
+        {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+      {% if user %}
+      <h2>Welcome back</h2> 
+      <form method="POST">
+          <div class="mb-3">
+              <label for="entry" class="form-label">Entry contents:</label>
+              <textarea name="content" id="entry" class="form-control" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Add entry</button>
+          <form method="POST">
+            <button type="submit" class="btn btn-danger" name="logout">Log out</button>
+          </form>
+      </form>
+
+    {% else %}
+      <h3>Log in to add an entry</h3>
+      <form method="POST">
+          <div class="mb-3">
+              <label for="username" class="form-label">Username:</label>
+              <input type="text" name="username" class="form-control" required>
+          </div>
+          <div class="mb-3">
+              <label for="password" class="form-label">Password:</label>
+              <input type="password" name="password" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-success">Log in</button>
+      </form>
+    {% endif %}
+<!-- </section>
+      <h1 class="mb-3">Add new entry</h1>
+      <form class = 'form' method="POST">
+        <div class="mb-3">
+          <label for="entry" class="form-label">Entry contents:</label>
+          <textarea name="content" id="entry" class="form-control" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add entry</button>
+      </form>
+    </section> -->
+    
+    <section class="mt-5">
+      <h1>Recent posts</h1>
+      {% for entry in entries%}
+      <article class="card my-3 p-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2 class="h5 mb-0">{{ entry[0] | truncate(30, true) }}</h2>
+          <time class="text-muted" >{{entry[1]}}</time>
+        </div>
+        <p class="mt-2">{{entry[0]}}</p>
+      </article>
+      {% endfor %}
+    </section>
+  </main>
+
+  {% endblock %}
