@@ -10,6 +10,8 @@ app = Flask(__name__)
 client = MongoClient(os.getenv("MONGO_URL"))
 app.db = client.Blog
 
+print("MONGO_URL from env:", os.getenv("MONGO_URL"))
+
 app.config['SECRET_KEY'] = os.urandom(24)
 myusername = os.getenv("myusername")
 mypassword = os.getenv("mypassword")
