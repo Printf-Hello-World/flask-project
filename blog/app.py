@@ -10,13 +10,11 @@ app = Flask(__name__)
 client = MongoClient(os.getenv("MONGO_URL"))
 app.db = client.Blog
 
-print("MONGO_URL from env:", os.getenv("MONGO_URL"))
-
-app.config['SECRET_KEY'] = os.urandom(24)
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 myusername = os.getenv("myusername")
 mypassword = os.getenv("mypassword")
 
-print("username from env:", myusername)
+
 
 @app.route('/')
 def home():
@@ -32,6 +30,7 @@ def contact():
 
 @app.route('/blog' ,methods =["GET", "POST"])
 def blog():
+    print("Session before request:", session)
     if 'user' in session:
         user = session['user']  # Assign logged-in user's name to 'user'
     else:
@@ -41,9 +40,10 @@ def blog():
         if "username" in request.form and "password" in request.form:
             username = request.form.get('username')
             password = request.form.get('password')
-            print('logged in',username)
+            print('Attempting login with username:', username)
             if username == myusername and password == mypassword:
                 session['user'] = username
+                print("Session after login:", session)
                 return redirect(url_for("blog"))
             else:
                 flash('Wrong Email or Password')
