@@ -16,6 +16,8 @@ app.config['SECRET_KEY'] = os.urandom(24)
 myusername = os.getenv("myusername")
 mypassword = os.getenv("mypassword")
 
+print("username from env:", myusername)
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -39,6 +41,7 @@ def blog():
         if "username" in request.form and "password" in request.form:
             username = request.form.get('username')
             password = request.form.get('password')
+            print('logged in',username)
             if username == myusername and password == mypassword:
                 session['user'] = username
                 return redirect(url_for("blog"))
@@ -54,6 +57,7 @@ def blog():
             return redirect(url_for("blog"))
     
     entries = []
+
     for entry in app.db.entries.find({}).sort('date',-1):
         entries.append((entry["text"], entry['date']))
     
