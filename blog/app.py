@@ -15,7 +15,6 @@ myusername = os.getenv("myusername")
 mypassword = os.getenv("mypassword")
 
 
-
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -40,10 +39,8 @@ def blog():
         if "username" in request.form and "password" in request.form:
             username = request.form.get('username')
             password = request.form.get('password')
-            print('Attempting login with username:', username)
             if username == myusername and password == mypassword:
                 session['user'] = username
-                print("Session after login:", session)
                 return redirect(url_for("blog"))
             else:
                 flash('Wrong Email or Password')
