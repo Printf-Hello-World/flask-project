@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import datetime
 from pymongo import MongoClient
 from dotenv import load_dotenv
-from dateutil.parser import parse
 
 load_dotenv()
 
@@ -57,7 +56,7 @@ def blog():
     entries = []
 
     for entry in app.db.entries.find({}).sort('date',-1):
-        date_str = entry['date'].strftime("%a %b %d %I:%M %p %Y")
+        date_str = entry['date'].strftime("%a, %b %d %I:%M %p %Y")
         entries.append((entry["text"], date_str))
     
     return render_template("blog.html", entries = entries, user=user)
